@@ -3,13 +3,19 @@ import React from "react";
 const RegisterForm: React.FC<{}> = () => {
   return (
     <form>
-      <label>Username</label>
-      <input type='text'></input>
-      <label>Password</label>
-      <input type='password'></input>
-      <label>Confirmed Password</label>
-      <input type='password'></input>
-      <button onSubmit={alert}></button>
+      <div>
+        <label>Username</label>
+        <input type='text'></input>
+      </div>
+      <div>
+        <label>Password</label>
+        <input type='password'></input>
+      </div>
+      <div>
+        <label>Confirmed Password</label>
+        <input type='password'></input>
+      </div>
+      <button onSubmit={alert}>Submit</button>
     </form>
   );
 };

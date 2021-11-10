@@ -1,13 +1,12 @@
 import React from "react";
-import LoginForm from "./components/LoginForm";
 import Access from "./pages/Access";
+import "./styles/styles.css";
 
 const Application: React.FC<{}> = (props) => {
   return (
-    <Access
-      name={"AccessPage"}
-      title={"Login"}
-      formType={<LoginForm></LoginForm>}></Access>
+    <div>
+      <Access name={"AccessPage"}></Access>
+    </div>
   );
 };
 
