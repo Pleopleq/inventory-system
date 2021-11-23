@@ -8,18 +8,17 @@ userRouter.post('/register', (req, res) => {
     try {
         const payload = req.body
         const user = userService.register(payload)
-        user?.then(user => res.json(user))
+        return user?.then(user => res.json(user))
     } catch (error) {
         console.log(error)
     }
 })
 
-userRouter.post('/login', (req, res) => {
+userRouter.post('/login', (req, res, next) => {
     try {
         const payload = req.body
         const user = userService.login(payload)
-        
-        user?.then(user => res.json(userService.verifyToken(user.token)))
+        return user?.then(user => res.json(user))
     } catch (error) {
         console.log(error)
     }
