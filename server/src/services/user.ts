@@ -1,5 +1,6 @@
 import * as bcrypt from 'bcryptjs'
 import * as jwt from 'jsonwebtoken'
+import { logger } from '../constants/logger'
 import { UserModel, User, UserModelLogin } from '../models/user'
 
 export class UserService {
@@ -12,13 +13,13 @@ export class UserService {
     }
 
     register({ username, password, email }: UserModel) {
-    return bcrypt.hash(password, this._saltRounds)
-        .then(hash => {
-            return User.create({ username, email, password: hash})
-        })
-        .catch(err => {
-            console.log(err)
-        })
+        return bcrypt.hash(password, this._saltRounds)
+            .then(hash => {
+                return User.create({ username, email, password: hash})
+            })
+            .catch(err => {
+                logger.log('error', 'Error: ', err)
+            })
     }
 
     login({ username }: UserModelLogin) {
@@ -28,13 +29,16 @@ export class UserService {
                 const username = u?.getDataValue("username")
                 return { token: jwt.sign({ user_id, username } , this._jwtSecret)}
             })
+            .catch(err => {
+                logger.log('error', 'Error: ', err)
+            })
     }
 
     verifyToken(token: string) {
         return new Promise((resolve, reject) => {
             jwt.verify(token, this._jwtSecret, (err, decoded) => {
                 if(err){
-                    resolve(false)
+                    reject(false)
                     return
                 }
                 UserService._user = User.findByPk(decoded?.user_id)
