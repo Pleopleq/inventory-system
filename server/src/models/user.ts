@@ -9,6 +9,11 @@ export interface UserModel {
     email: string
 }
 
+export interface UserModelLogin {
+    username: string
+    password: string
+}
+
 export const User = sequelize.define("users", {
     user_id: {
         type: Sequelize.INTEGER,
@@ -17,7 +22,7 @@ export const User = sequelize.define("users", {
     },
     username: {
         type: Sequelize.STRING,
-        allowNull: false,
+        allowNull: false
     },
     password: {
         type: Sequelize.STRING,
@@ -25,6 +30,6 @@ export const User = sequelize.define("users", {
     },
     email: {
         type: Sequelize.STRING,
-        allowNull: false
+        allowNull: false,
     },
 })
