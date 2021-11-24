@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useState } from "react"
+import UserService from "../services/users";
 
 const RegisterForm: React.FC<{}> = () => {
   const [registerState, setRegisterState] = useState({
@@ -7,6 +8,7 @@ const RegisterForm: React.FC<{}> = () => {
     password: '',
     confirmation: ''
   })
+  const userService = new UserService() 
 
   function handleChange(evt: React.ChangeEvent<HTMLInputElement>) {
     const value = evt.target.value
@@ -17,8 +19,23 @@ const RegisterForm: React.FC<{}> = () => {
     })
   }
 
+  async function handleOnSubmit(e: React.FormEvent) {
+    e.preventDefault()
+
+    if(registerState.password !== registerState.confirmation) {
+      return alert("The password is not the same.")
+    }
+
+    const newUser = await userService.register({username: registerState.username, password: registerState.password, email: registerState.email})
+
+    if(newUser === '') {
+      return alert("This username and email is already taken.")
+    }
+    console.log(newUser)
+  }
+
   return (
-    <form>
+    <form onSubmit={handleOnSubmit}>
       <div>
         <label>Username</label>
         <input name="username" type='text' value={registerState.username} onChange={handleChange}></input>
@@ -35,7 +52,7 @@ const RegisterForm: React.FC<{}> = () => {
         <label>Confirmed Password</label>
         <input name="confirmation" type='password' value={registerState.confirmation} onChange={handleChange}></input>
       </div>
-      <button onSubmit={alert}>Submit</button>
+      <button type="submit">Submit</button>
     </form>
   );
 };

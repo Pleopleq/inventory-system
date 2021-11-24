@@ -1,8 +1,8 @@
 import axios from 'axios'
 
 class UserService {
-    private readonly baseURLRegister = 'localhost:4040/register'
-    private readonly baseURLLogin = 'localhost:4040/login'
+    private readonly baseURLRegister = 'http://localhost:4040/register'
+    private readonly baseURLLogin = 'http://localhost:4040/login'
 
     async register(credentials: object) {
         const response = await axios.post(this.baseURLRegister, credentials)

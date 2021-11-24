@@ -5,8 +5,8 @@ import { tokenGuard } from "./middlewares/tokenGuard";
 
 const app = express();
 
-app.use(cors());
 app.use(express.json());
+app.use(cors());
 // Unprotected Routes
 app.use(userRouter)
 

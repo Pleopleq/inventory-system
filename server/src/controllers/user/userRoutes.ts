@@ -9,7 +9,7 @@ userRouter.post('/register', (req, res) => {
     try {
         const payload = req.body
         const user = userService.register(payload)
-        return user?.then(user => res.json(user))
+        return user?.then(user => res.status(200).json(user))
     } catch (error) {
         logger.log('error', 'Error: ', error)
     }
@@ -19,7 +19,7 @@ userRouter.post('/login', (req, res) => {
     try {
         const payload = req.body
         const user = userService.login(payload)
-        return user?.then(user => res.json(user))
+        return user?.then(user => res.status(200).json(user))
     } catch (error) {
         logger.log('error', 'Error: ', error)
     }
