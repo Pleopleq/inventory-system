@@ -1,14 +1,19 @@
 import React, { useState } from "react"
 import UserService from "../services/users";
+import FormNotification from "./FormNotification";
 
 const RegisterForm: React.FC<{}> = () => {
+  const userService = new UserService()
+  const [alert, setAlert] = useState({
+    type: '',
+    message: ''
+  })
   const [registerState, setRegisterState] = useState({
     username: '',
     email: '',
     password: '',
     confirmation: ''
   })
-  const userService = new UserService() 
 
   function handleChange(evt: React.ChangeEvent<HTMLInputElement>) {
     const value = evt.target.value
@@ -23,18 +28,37 @@ const RegisterForm: React.FC<{}> = () => {
     e.preventDefault()
 
     if(registerState.password !== registerState.confirmation) {
-      return alert("The password is not the same.")
+      setAlert({type: 'red', message: "The password is not the same."})
+      return setTimeout(() => {
+        setAlert({type: '', message: ' '})
+      }, 3000);
     }
 
     const newUser = await userService.register({username: registerState.username, password: registerState.password, email: registerState.email})
 
     if(newUser === '') {
-      return alert("This username and email is already taken.")
+      setAlert( {type: 'red', message: "This username or email is already taken."})
+      return setTimeout(() => {
+        setAlert({type: '', message: ' '})
+      }, 3000);
     }
-    console.log(newUser)
+
+    setRegisterState({
+      username: '',
+      email: '',
+      password: '',
+      confirmation: ''
+    })
+
+    setAlert({type: 'green', message: "Your account is registered!"})
+      return setTimeout(() => {
+        window.location.reload()
+        setAlert({type: '', message: ' '})
+      }, 3000);
   }
 
   return (
+    <div>
     <form onSubmit={handleOnSubmit}>
       <div>
         <label>Username</label>
@@ -54,6 +78,8 @@ const RegisterForm: React.FC<{}> = () => {
       </div>
       <button type="submit">Submit</button>
     </form>
+      <FormNotification className={''} type={alert.type} message={alert.message}></FormNotification>
+    </div>
   );
 };
 
