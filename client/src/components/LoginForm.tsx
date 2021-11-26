@@ -3,10 +3,10 @@ import UserService from "../services/users";
 import FormNotification from './FormNotification'
 
 const LoginForm: React.FC<{}> = () => {
-  // const [alert, setAlert] = useState({
-  //   type: '',
-  //   message: ''
-  // })
+  const [alert, setAlert] = useState({
+    type: '',
+     message: ''
+  })
   const [loginState, setLoginState] = useState({
     username: '',
     password: ''
@@ -28,11 +28,27 @@ const LoginForm: React.FC<{}> = () => {
 
     const loggedUser = await userService.login({ username: loginState.username, password: loginState.password})
     
-    console.log(loggedUser)
+    if(!loggedUser) {
+      setAlert({
+        type:'red',
+        message:'Unable to log in'
+      })
+      return setTimeout(() => {
+        setAlert({type: '', message: ' '})
+      }, 3000);
+    }
 
+    setAlert({
+      type:'green',
+      message: JSON.stringify(loggedUser.data.token)
+    })
+    return setTimeout(() => {
+      setAlert({type: '', message: ' '})
+    }, 3000);
   }
 
   return (
+    <div>
     <form onSubmit={handleOnSubmit}>
       <div>
         <label>Username</label>
@@ -44,6 +60,8 @@ const LoginForm: React.FC<{}> = () => {
       </div>
       <button type="submit">Login</button>
     </form>
+    <FormNotification className={''} type={alert.type} message={alert.message}></FormNotification>
+    </div>
   );
 };
 
