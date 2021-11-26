@@ -5,13 +5,22 @@ class UserService {
     private readonly baseURLLogin = 'http://localhost:4040/login'
 
     async register(credentials: object) {
-        const response = await axios.post(this.baseURLRegister, credentials)
-        return response.data
+        try {
+            const response = await axios.post(this.baseURLRegister, credentials)
+            return response
+        } catch (error) {
+            console.log(error)
+        }
+        
     }
 
     async login(credentials: object) {
-        const response = await axios.post(this.baseURLLogin, credentials)
-        return response.data
+        try {
+            const response = await axios.post(this.baseURLLogin, credentials)
+            return response
+        } catch (error) {
+            console.log(error)
+        }
     }
 }
 

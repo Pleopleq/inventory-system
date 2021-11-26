@@ -1,3 +1,4 @@
+import { AxiosResponse } from "axios";
 import React, { useState } from "react"
 import UserService from "../services/users";
 import FormNotification from "./FormNotification";
@@ -34,9 +35,9 @@ const RegisterForm: React.FC<{}> = () => {
       }, 3000);
     }
 
-    const newUser = await userService.register({username: registerState.username, password: registerState.password, email: registerState.email})
-
-    if(newUser === '') {
+    const newUser: AxiosResponse<any, any> | undefined = await userService.register({username: registerState.username, password: registerState.password, email: registerState.email})
+    
+    if(!newUser) {
       setAlert( {type: 'red', message: "This username or email is already taken."})
       return setTimeout(() => {
         setAlert({type: '', message: ' '})
