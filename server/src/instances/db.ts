@@ -1,16 +1,17 @@
 import { Sequelize } from "sequelize";
 
-const dbName = "inventory_sys"
-const username = "postgres"
-const password = "password"
-
-export const sequelize = new Sequelize( dbName, username, password, {
-  host: "localhost",
-  dialect: "postgres",
-  define: {
-    "createdAt": "createdat",
-    "updatedAt": "updatedat"
+export const sequelize = new Sequelize(
+  process.env.DB_NAME!,
+  process.env.DB_USER!,
+  process.env.DB_PASS!,
+  {
+    host: process.env.DB_HOST,
+    dialect: "postgres",
+    define: {
+      createdAt: "createdat",
+      updatedAt: "updatedat",
+    },
   }
-});
+);
 
-sequelize.authenticate()
+sequelize.authenticate();

@@ -4,8 +4,8 @@ import { logger } from "../constants/logger";
 import { UserModel, User, UserModelLogin } from "../models/user";
 
 export class UserService {
-  private readonly _saltRounds = 12;
-  private readonly _jwtSecret = "0.2dk221sazh";
+  private readonly _saltRounds = process.env.SALT_ROUNDS!;
+  private readonly _jwtSecret = process.env.JWT_SECRET!;
 
   private static _user: any;
   static get user() {

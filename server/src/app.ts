@@ -1,3 +1,5 @@
+import dotenv from 'dotenv'
+dotenv.config()
 import express from "express";
 import cors from "cors";
 import { userRouter } from './controllers/user/userRoutes'
@@ -17,7 +19,4 @@ app.get('/some-protected-resource', (req, res, next) => {
     res.json('Protected Hello World')
 })
 
-
-
 export default app
-
