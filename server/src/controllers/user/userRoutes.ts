@@ -9,10 +9,11 @@ userRouter.post("/register", async (req, res) => {
   try {
     const payload = req.body;
     const user = await userService.register(payload);
+
     if (!user) {
       res
         .status(404)
-        .send({ error: "This username or email is already taken." });
+        .send({ error: "This email is used." });
     }
 
     res.status(200).json(user);

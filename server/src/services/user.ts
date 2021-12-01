@@ -4,7 +4,7 @@ import { logger } from "../constants/logger";
 import { UserModel, User, UserModelLogin } from "../models/user";
 
 export class UserService {
-  private readonly _saltRounds = process.env.SALT_ROUNDS!;
+  private readonly _saltRounds = 12;
   private readonly _jwtSecret = process.env.JWT_SECRET!;
 
   private static _user: any;
@@ -14,13 +14,13 @@ export class UserService {
 
   register({ username, password, email }: UserModel) {
     return bcrypt
-      .hash(password, this._saltRounds)
-      .then((hash) => {
-        return User.create({ username, email, password: hash });
-      })
-      .catch((err) => {
-        logger.log("error", "Error: ", err);
-      });
+    .hash(password, this._saltRounds)
+    .then((hash) => {
+      return User.create({ username, email, password: hash });
+    })
+    .catch((err) => {
+      logger.log("error", "Error: ", err);
+    });
   }
 
   login({ username, password }: UserModelLogin) {
