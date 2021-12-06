@@ -5,8 +5,13 @@ import { UserModel, User, UserModelLogin } from "../models/user";
 import Models from '../models/index'
 
 export class UserService {
+  constructor() {
+    this.models = Models();
+  }
+
   private readonly _saltRounds = 12;
   private readonly _jwtSecret = process.env.JWT_SECRET!;
+  private models;
 
   private static _user: any;
   static get user() {
@@ -17,7 +22,7 @@ export class UserService {
     return bcrypt
     .hash(password, this._saltRounds)
     .then((hash) => {
-      return User.create({ username, email, password: hash });
+      return this.models.User.create({ username, email, password: hash });
     })
     .catch((err) => {
       logger.log("error", "Error: ", err);
@@ -25,7 +30,7 @@ export class UserService {
   }
 
   login({ username, password }: UserModelLogin) {
-    return User.findOne({ where: { username } })
+    return this.models.User.findOne({ where: { username } })
       .then(async (user) => {
         if (!user) {
           throw new Error("Unable to log in");
@@ -56,7 +61,7 @@ export class UserService {
           reject(false);
           return;
         }
-        UserService._user = User.findByPk(decoded?.user_id);
+        UserService._user = this.models.User.findByPk(decoded?.user_id);
 
         resolve(true);
         return;

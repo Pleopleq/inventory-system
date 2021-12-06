@@ -40,4 +40,6 @@ export default function() {
     })
 
     sequelize.sync({ alter: true })
+    
+    return { User, Inventory }
 }
