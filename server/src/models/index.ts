@@ -15,6 +15,20 @@ export interface UserModelLogin {
 }
 
 export default function() {
+    const Inventory = sequelize.define("inventory", {
+        inventory_id: {
+            type: DataTypes.UUID,
+            defaultValue: DataTypes.UUIDV4,
+            primaryKey: true
+        },
+        inventory_name: {
+            type: Sequelize.STRING,
+            allowNull: false
+        }
+    }, {
+        timestamps: true
+    })
+
     const User = sequelize.define("users", {
         user_id: {
             type: DataTypes.UUID,
@@ -38,26 +52,14 @@ export default function() {
         timestamps:true,
     })
 
-    const Inventory = sequelize.define("inventory", {
-        inventory_id: {
-            type: DataTypes.UUID,
-            defaultValue: DataTypes.UUIDV4,
-            primaryKey: true
-        },
-        inventory_name: {
-            type: Sequelize.STRING,
-            allowNull: false
-        }
-    }, {
-        timestamps: true
-    })
-
     User.hasMany(Inventory, {
         foreignKey: {
             name: 'userId',
             allowNull: false
         }
     })
+
+    Inventory.belongsTo(User, {foreignKey: 'userId'})
 
     sequelize.sync({ alter: true })
 
