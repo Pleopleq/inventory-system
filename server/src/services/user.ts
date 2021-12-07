@@ -1,8 +1,7 @@
 import * as bcrypt from "bcryptjs";
 import * as jwt from "jsonwebtoken";
 import { logger } from "../constants/logger";
-import { UserModel, User, UserModelLogin } from "../models/user";
-import Models from '../models/index'
+import Models, { UserModel, UserModelLogin } from '../models/index'
 
 export class UserService {
   constructor() {

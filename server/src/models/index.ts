@@ -1,11 +1,24 @@
 import * as Sequelize from 'sequelize'
+import { DataTypes } from 'sequelize'
 import { sequelize } from '../instances/db'
+
+export interface UserModel {
+    user_id: string
+    username: string
+    password: string
+    email: string
+}
+
+export interface UserModelLogin {
+    username: string
+    password: string
+}
 
 export default function() {
     const User = sequelize.define("users", {
         user_id: {
-            type: Sequelize.DataTypes.UUID,
-            defaultValue: Sequelize.DataTypes.UUIDV4,
+            type: DataTypes.UUID,
+            defaultValue: DataTypes.UUIDV4,
             primaryKey: true
         },
         username: {
@@ -27,8 +40,8 @@ export default function() {
 
     const Inventory = sequelize.define("inventory", {
         inventory_id: {
-            type: Sequelize.DataTypes.UUIDV4,
-            defaultValue: Sequelize.DataTypes.UUIDV4,
+            type: DataTypes.UUIDV4,
+            defaultValue: DataTypes.UUIDV4,
             primaryKey: true
         },
         inventory_name: {
@@ -39,7 +52,17 @@ export default function() {
         timestamps: true
     })
 
+    User.hasMany(Inventory, {
+        foreignKey: {
+            name: 'inventoryId',
+        },
+        as: 'inventories',
+        keyType: DataTypes.STRING,
+    })
+
+    Inventory.belongsTo(User)
+
     sequelize.sync({ alter: true })
-    
+
     return { User, Inventory }
 }

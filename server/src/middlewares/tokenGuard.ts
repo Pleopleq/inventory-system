@@ -17,9 +17,11 @@ export const tokenGuard : (() => RequestHandler) = (() => (req, res, next) => {
     const hasAcces = userService.verifyToken(token)
 
     hasAcces.then(access => {
-        if(!access) {
-            return res.status(403).send({ message: 'No access' })
+        if(access) {
+            return next()
         }
-        next()
+    })
+    .catch(error => {
+        return res.status(403).send({ message: 'No access' })
     })
 })
