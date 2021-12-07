@@ -17,8 +17,5 @@ app.use(userRouter)
 app.use(tokenGuard())
 
 app.use(inventoryRouter)
-app.get('/some-protected-resource', (req, res, next) => {
-    res.json('Protected Hello World')
-})
 
 export default app

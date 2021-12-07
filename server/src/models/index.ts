@@ -40,7 +40,7 @@ export default function() {
 
     const Inventory = sequelize.define("inventory", {
         inventory_id: {
-            type: DataTypes.UUIDV4,
+            type: DataTypes.UUID,
             defaultValue: DataTypes.UUIDV4,
             primaryKey: true
         },
@@ -54,13 +54,10 @@ export default function() {
 
     User.hasMany(Inventory, {
         foreignKey: {
-            name: 'inventoryId',
-        },
-        as: 'inventories',
-        keyType: DataTypes.STRING,
+            name: 'userId',
+            allowNull: false
+        }
     })
-
-    Inventory.belongsTo(User)
 
     sequelize.sync({ alter: true })
 
