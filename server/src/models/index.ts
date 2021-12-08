@@ -17,9 +17,9 @@ export interface UserModelLogin {
 export default function() {
     const Inventory = sequelize.define("inventory", {
         inventory_id: {
+            primaryKey: true,
             type: DataTypes.UUID,
             defaultValue: DataTypes.UUIDV4,
-            primaryKey: true
         },
         inventory_name: {
             type: Sequelize.STRING,
@@ -31,9 +31,9 @@ export default function() {
 
     const User = sequelize.define("users", {
         user_id: {
+            primaryKey: true,
             type: DataTypes.UUID,
-            defaultValue: DataTypes.UUIDV4,
-            primaryKey: true
+            defaultValue: DataTypes.UUIDV4
         },
         username: {
             type: Sequelize.STRING,
@@ -56,12 +56,18 @@ export default function() {
         foreignKey: {
             name: 'userId',
             allowNull: false
-        }
+        },
+        as: 'inventories',
+        keyType: Sequelize.DataTypes.UUID,
     })
 
     Inventory.belongsTo(User, {foreignKey: 'userId'})
 
-    sequelize.sync({ alter: true })
+    sequelize.sync({ alter: false }).then(() => {
+        console.log("--- DB connected ---")
+    }).catch(error => {
+        console.log("--- Theres an error connecting to the database: ", error)
+    })
 
     return { User, Inventory }
 }
